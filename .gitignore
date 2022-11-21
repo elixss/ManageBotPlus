@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/ManageBotPlus/Json/allowedGuilds.json
+/ManageBotPlus/Json/token.json
