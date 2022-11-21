@@ -17,7 +17,7 @@ namespace ManageBotPlus
             this._services = services;
         }
 
-        [SlashCommand("source", "View source code on GitHub!")]
+        [SlashCommand("source", "View my source code on GitHub!")]
         public async Task OpenSourceCommandAsync()
         {
             IEmote emote = Emote.Parse("<:github:935591565122998362>");
