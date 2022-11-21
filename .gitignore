@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /ManageBotPlus/Json/allowedGuilds.json
 /ManageBotPlus/Json/token.json
+/ManageBotPlus/Json/token.json
+/ManageBotPlus/Json/allowedGuilds.json
