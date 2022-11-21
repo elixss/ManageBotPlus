@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 
 namespace ManageBotPlus
 {
-    public class NSFWCommands : InteractionModuleBase
+    public class NSFWCommands : InteractionModuleBase, IManageBotModule
     {
         private readonly IServiceProvider _service;
         public NSFWCommands(IServiceProvider serviceProvider)

@@ -19,6 +19,9 @@ namespace ManageBotPlus
                     case InteractionCommandError.UnmetPrecondition:
                         await context.Interaction.RespondAsync($"Requirements to execute the command are not met: {result.ErrorReason}", ephemeral: true);
                         break;
+                    case InteractionCommandError.Unsuccessful:
+                        await context.Interaction.RespondAsync($"An error occurred: {result.ErrorReason}", ephemeral: true);
+                        break;
                     default:
                         break;
                 }

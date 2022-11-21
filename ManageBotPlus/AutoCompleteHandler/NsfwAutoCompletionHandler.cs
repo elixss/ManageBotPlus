@@ -20,6 +20,7 @@ namespace ManageBotPlus
             };
             List<AutocompleteResult> autocompletions = new();
 
+            // this is currently null, we will need to fix this.
             if (context.Channel is ITextChannel channel)
             {
                 if (!channel.IsNsfw)

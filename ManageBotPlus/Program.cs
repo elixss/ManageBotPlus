@@ -1,7 +1,9 @@
 ﻿using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
+using ManageBotPlus;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace ManageBotPlus
 {
@@ -83,12 +85,24 @@ namespace ManageBotPlus
 
         private async Task SetupCommandsAsync()
         {
-            await this._interactionService.AddModuleAsync<NSFWCommands>(this._serviceProvider);
+            await this.AddModulesAsync();
 #if DEBUG
             await this._interactionService.RegisterCommandsToGuildAsync(TEST_GUILD_ID, true);
 #else
             await this._interactionService?.RegisterCommandsGloballyAsync(true);
 #endif
+        }
+
+        public async Task AddModulesAsync()
+        {
+            var types = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(type => type.IsClass && type.GetInterfaces().Contains(typeof(IManageBotModule)))
+                .ToList();
+
+            foreach (var type in types)
+            {
+                await this._interactionService.AddModuleAsync(type, this._serviceProvider);
+            }
         }
 
         public void Dispose()
