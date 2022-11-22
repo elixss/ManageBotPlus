@@ -3,7 +3,7 @@
 ## ManageBot Plus is an extension to the [original ManageBot](http://invite.managebot.xyz). 
 
 
-If you want to host this bot yourself, you need to make a folder in the root of the project called `Json` and two files, called `allowedGuilds.json` and `token.json`.
+If you want to host this bot yourself, you need to make a folder in the root of the project (where `Program.cs` is located) called `Json` and two files, called `allowedGuilds.json` and `token.json`.
 
 The structure of `token.json` is as follows
 ```json
