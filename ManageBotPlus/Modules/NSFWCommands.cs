@@ -31,7 +31,7 @@ namespace ManageBotPlus
             var builder = new EmbedBuilder()
             {
                 Description = $"Content from category: {category}",
-                Color = 0xac45ec,
+                Color = Config.Color,
                 ImageUrl = response.Message
             };
             await ModifyOriginalResponseAsync(message => message.Embed = builder.Build());

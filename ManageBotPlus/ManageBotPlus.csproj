@@ -8,13 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Json\allowedGuilds.json" />
-    <None Remove="Json\token.json" />
+    <None Remove="Config\allowedGuilds.json" />
+    <None Remove="Config\token.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Json\allowedGuilds.json" />
-    <EmbeddedResource Include="Json\token.json" />
+    <EmbeddedResource Include="Config\allowedGuilds.json" />
+    <EmbeddedResource Include="Config\token.json" />
   </ItemGroup>
 
   <ItemGroup>

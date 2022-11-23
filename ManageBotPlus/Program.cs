@@ -12,7 +12,7 @@ namespace ManageBotPlus
         private readonly IServiceProvider _serviceProvider;
         private DiscordSocketClient? _client;
         private InteractionService? _interactionService;
-        private const ulong TEST_GUILD_ID = 890279450376294453;
+
         public Program()
         {
             this._serviceProvider = CreateServiceProvider();
@@ -30,7 +30,9 @@ namespace ManageBotPlus
 
             var interConfig = new InteractionServiceConfig()
             {
-                LogLevel = LogSeverity.Info
+                LogLevel = LogSeverity.Info,
+                DefaultRunMode = RunMode.Async,
+                UseCompiledLambda = true,
             };
 
             var collection = new ServiceCollection()
@@ -72,7 +74,7 @@ namespace ManageBotPlus
                 AllowedGuildsModel guildIds = await JsonUtil.GetJsonAsync<AllowedGuildsModel>("allowedGuilds.json");
                 if ((await guild.GetUserAsync(890273033204420678)) == null && !guildIds.AllowedGuilds.Contains((ulong)interaction.GuildId))
                 {
-                    await interaction.RespondAsync("It appears, that ManageBot is not on this server. To use this bot, you must [invite ManageBot](https://discord.com/api/oauth2/authorize?client_id=890273033204420678&permissions=1374859684086&scope=bot%20applications.commands). " +
+                    await command.RespondAsync("It appears, that ManageBot is not on this server. To use this bot, you must [invite ManageBot](https://discord.com/api/oauth2/authorize?client_id=890273033204420678&permissions=1374859684086&scope=bot%20applications.commands). " +
                         "If you think this is a mistake, please [join the support server](https://discord.gg/5mYSubhkrg) or contact a server moderator.", ephemeral: true);
                     return;
                 }
@@ -87,7 +89,7 @@ namespace ManageBotPlus
         {
             await this.AddModulesAsync();
 #if DEBUG
-            await this._interactionService.RegisterCommandsToGuildAsync(TEST_GUILD_ID, true);
+            await this._interactionService.RegisterCommandsToGuildAsync(Config.TestGuildId, true);
 #else
             await this._interactionService?.RegisterCommandsGloballyAsync(true);
 #endif
@@ -112,6 +114,5 @@ namespace ManageBotPlus
             Environment.Exit(0);
             GC.SuppressFinalize(this);
         }
-
     }
 }

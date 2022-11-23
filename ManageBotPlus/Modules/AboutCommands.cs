@@ -1,5 +1,7 @@
 ﻿using Discord;
 using Discord.Interactions;
+using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +14,14 @@ namespace ManageBotPlus
     public class AboutCommands : InteractionModuleBase, IManageBotModule
     {
         private readonly IServiceProvider _services;
+        private readonly InteractionService _interactionService;
+        private readonly DiscordSocketClient _client;
+
         public AboutCommands(IServiceProvider services)
         {
             this._services = services;
+            this._client = services.GetRequiredService<DiscordSocketClient>();
+            this._interactionService = services.GetRequiredService<InteractionService>();
         }
 
         [SlashCommand("source", "View my source code on GitHub!")]
@@ -26,5 +33,27 @@ namespace ManageBotPlus
             await RespondAsync("Click to view my source code.", components: builder.Build());
         }
 
+        [SlashCommand("me", "View information about me!")]
+        public async Task AboutMeAsync()
+        {
+            string botInfo = $$"""
+                Guilds: {{this._client.Guilds.Count}}
+                Commands: {{this._interactionService.SlashCommands.Count}}
+                Developer: elixss#9999
+                Gateway latency: {{this._client.Latency}}ms
+                """;
+
+            var builder = new EmbedBuilder()
+            {
+                Title = "About ManageBot Plus",
+                Description = $"Last update: <t:{Config.LastUpdate}:R>",
+                Color = Config.Color
+            }
+            .AddField("See information about me!", botInfo, false);
+            var onlineSince = DateTime.UtcNow - Config.StartTime;
+
+
+            await RespondAsync(embed: builder.Build());
+        }
     }
 }
