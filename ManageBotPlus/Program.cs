@@ -58,7 +58,12 @@ namespace ManageBotPlus
             this._interactionService.SlashCommandExecuted += SlashCommandExecutedHandler.SlashCommandExecuted;
 
             this._client.Ready += this.SetupCommandsAsync;
+#if DEBUG
+
+            await this._client.LoginAsync(TokenType.Bot, (await JsonUtil.GetJsonAsync<TokenModel>("token.json")).TestToken);
+#else
             await this._client.LoginAsync(TokenType.Bot, (await JsonUtil.GetJsonAsync<TokenModel>("token.json")).Token);
+#endif
             await this._client.SetGameAsync("Hello World!");
             await this._client.StartAsync();
 
