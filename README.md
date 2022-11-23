@@ -10,7 +10,7 @@ The structure of `token.json` is as follows
 ```json
 {
   "token": "token here",
-  "testToken:" "test token here"
+  "testToken": "test token here"
 }
 ```
 and `allowedGuilds.json`
