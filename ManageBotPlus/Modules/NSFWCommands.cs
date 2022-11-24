@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 
 namespace ManageBotPlus
 {
+    [Group("nsfw", "Various commands that are NSFW related.")]
     public class NSFWCommands : InteractionModuleBase, IManageBotModule
     {
         private readonly IServiceProvider _service;
@@ -12,15 +13,8 @@ namespace ManageBotPlus
             this._service = serviceProvider;
         }
 
-        [RequireNsfw]
-        [SlashCommand("nsfw", "This command displays NSFW content from given categories.")]
-        public async Task NsfwAsync(
-            [Summary("category", "Choose the category to see the content from"), Autocomplete(typeof(NsfwAutoCompleteHandler))] string category,
-            [Summary("hidden", "Privacy is respected. Whether this is hidden, or not."), Choice("Yes", "true"), Choice("No", "false")] string? hidden = null
-        )
+        private static async Task<EmbedBuilder> GetNsfwEmbed(string category)
         {
-            await DeferAsync(ephemeral: bool.Parse(hidden ?? "false"));
-
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", "015445535454455354D6");
             HttpResponseMessage result = await client.GetAsync($"https://nekobot.xyz/api/image?type={category.ToString().ToLower()}");
@@ -34,7 +28,57 @@ namespace ManageBotPlus
                 Color = Config.Color,
                 ImageUrl = response.Message
             };
-            await ModifyOriginalResponseAsync(message => message.Embed = builder.Build());
+            return builder;
+        }
+
+        [SlashCommand("show", "This command displays NSFW content from given categories.")]
+        public async Task NsfwAsync(
+            [Summary("category", "Choose the category to see the content from"), Autocomplete(typeof(NsfwAutoCompleteHandler))] string category,
+            [Summary("hidden", "Privacy is respected. Whether this is hidden, or not."), Choice("Yes", "true"), Choice("No", "false")] string? hidden = null
+        )
+        {
+            await DeferAsync(ephemeral: bool.Parse(hidden ?? "false"));
+            ITextChannel channel = await Context.Client.GetChannelAsync((ulong)Context.Interaction.ChannelId) as ITextChannel;
+            if (!channel.IsNsfw)
+            {
+                await ModifyOriginalResponseAsync(message => message.Content = "This works only in NSFW channels.");
+                return;
+            }
+
+            await ModifyOriginalResponseAsync(message => message.Embed = GetNsfwEmbed(category).GetAwaiter().GetResult().Build());
+        }
+
+        [SlashCommand("dm", "Sends you NSFW content into your direct messages. Won't be hidden.")]
+        public async Task NsfwDmAsync(
+            [Summary("category", "Choose the category to see the content from"),
+            Autocomplete(typeof(NsfwAutoCompleteHandler))] string category
+        )
+        {
+            await DeferAsync(ephemeral: true);
+            try
+            {
+                ITextChannel channel = await Context.Client.GetChannelAsync((ulong)Context.Interaction.ChannelId) as ITextChannel;
+                if (!channel.IsNsfw)
+                {
+                    await ModifyOriginalResponseAsync(message => message.Content = "This works only in NSFW channels.");
+                    return;
+                }
+                await Context.User.SendMessageAsync(embed: (await GetNsfwEmbed(category)).Build());
+                await ModifyOriginalResponseAsync(message => message.Content = "Check your DMs!");
+            }
+            catch (Discord.Net.HttpException ex)
+            {
+                if (ex.DiscordCode == DiscordErrorCode.CannotSendMessageToUser)
+                {
+                    await ModifyOriginalResponseAsync(async message =>
+                    {
+                        message.Content = "Couldn't DM you. I send it here instead:";
+                        message.Embed = (await GetNsfwEmbed(category)).Build();
+                    });
+                    return;
+                }
+                await ModifyOriginalResponseAsync(message => message.Content = $"Something went frong: {ex.Message}");
+            }
         }
     }
 }
