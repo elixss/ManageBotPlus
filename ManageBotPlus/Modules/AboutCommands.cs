@@ -55,5 +55,13 @@ namespace ManageBotPlus
 
             await RespondAsync(embed: builder.Build());
         }
+
+        [SlashCommand("support-server", "Get a link to join the support server!")]
+        public async Task SupportServerAsync()
+        {
+            var builder = new ComponentBuilder()
+                .WithButton(label: "Click here", url: Config.SupportInvite, style: ButtonStyle.Link);
+            await RespondAsync("Click to join the support server", components: builder.Build());
+        }
     }
 }

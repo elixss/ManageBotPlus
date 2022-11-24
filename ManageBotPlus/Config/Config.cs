@@ -9,5 +9,6 @@ namespace ManageBotPlus
         public static string Developer => "elixss#9999";
         public static ulong TestGuildId => 890279450376294453;
         public static DateTime StartTime => DateTime.UtcNow;
+        public static string SupportInvite => "https://discord.gg/5mYSubhkrg";
     }
 }
