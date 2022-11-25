@@ -5,7 +5,7 @@ namespace ManageBotPlus
 {
     public readonly struct Config
     {
-        public static readonly int lastUpdate = 1669324688;
+        public static readonly int lastUpdate = 1669417825;
         public static readonly Color color = 0xac45ec;
         public static readonly string developer = "elixss#9999";
         public static readonly ulong testGuildId = 890279450376294453;
