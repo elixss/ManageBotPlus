@@ -25,7 +25,7 @@ namespace ManageBotPlus
             var builder = new EmbedBuilder()
             {
                 Description = $"Content from category: {category}",
-                Color = Config.Color,
+                Color = Config.color,
                 ImageUrl = response.Message
             };
             return builder;

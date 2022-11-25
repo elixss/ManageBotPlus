@@ -94,23 +94,14 @@ namespace ManageBotPlus
         {
             await this.AddModulesAsync();
 #if DEBUG
-            await this._interactionService.RegisterCommandsToGuildAsync(Config.TestGuildId, true);
+            await this._interactionService.RegisterCommandsToGuildAsync(Config.testGuildId, true);
 #else
             await this._interactionService?.RegisterCommandsGloballyAsync(true);
 #endif
         }
 
-        public async Task AddModulesAsync()
-        {
-            var types = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(type => type.IsClass && type.GetInterfaces().Contains(typeof(IManageBotModule)))
-                .ToList();
-
-            foreach (var type in types)
-            {
-                await this._interactionService.AddModuleAsync(type, this._serviceProvider);
-            }
-        }
+        public async Task AddModulesAsync() =>
+            Config.modules.ForEach(async module => await this._interactionService.AddModuleAsync(module, this._serviceProvider));
 
         public void Dispose()
         {
