@@ -28,9 +28,8 @@ namespace ManageBotPlus
             };
             List<AutocompleteResult> autocompletions = new();
 
-            ITextChannel channel = await this._client.GetChannelAsync((ulong)autocompleteInteraction.ChannelId) as ITextChannel;
 
-            if (channel.IsNsfw)
+            if (context.Channel is ITextChannel channel && channel.IsNsfw)
             {
                 foreach (string category in categories)
                 {

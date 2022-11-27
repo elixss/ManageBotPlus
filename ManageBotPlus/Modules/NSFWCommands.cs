@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 
 namespace ManageBotPlus
 {
+    [RequireNsfw]
     [Group("nsfw", "Various commands that are NSFW related.")]
     public class NSFWCommands : InteractionModuleBase, IManageBotModule
     {
@@ -38,12 +39,6 @@ namespace ManageBotPlus
         )
         {
             await DeferAsync(ephemeral: bool.Parse(hidden ?? "false"));
-            ITextChannel channel = await Context.Client.GetChannelAsync((ulong)Context.Interaction.ChannelId) as ITextChannel;
-            if (!channel.IsNsfw)
-            {
-                await ModifyOriginalResponseAsync(message => message.Content = "This works only in NSFW channels.");
-                return;
-            }
 
             await ModifyOriginalResponseAsync(message => message.Embed = GetNsfwEmbed(category).GetAwaiter().GetResult().Build());
         }
@@ -57,12 +52,6 @@ namespace ManageBotPlus
             await DeferAsync(ephemeral: true);
             try
             {
-                ITextChannel channel = await Context.Client.GetChannelAsync((ulong)Context.Interaction.ChannelId) as ITextChannel;
-                if (!channel.IsNsfw)
-                {
-                    await ModifyOriginalResponseAsync(message => message.Content = "This works only in NSFW channels.");
-                    return;
-                }
                 await Context.User.SendMessageAsync(embed: (await GetNsfwEmbed(category)).Build());
                 await ModifyOriginalResponseAsync(message => message.Content = "Check your DMs!");
             }

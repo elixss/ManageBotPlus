@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace ManageBotPlus
 {
-    public class Program : IDisposable
+    public class Program
     {
         private readonly IServiceProvider _serviceProvider;
         private DiscordSocketClient? _client;
@@ -25,7 +25,7 @@ namespace ManageBotPlus
         {
             var config = new DiscordSocketConfig()
             {
-                GatewayIntents = GatewayIntents.None
+                GatewayIntents = GatewayIntents.Guilds
             };
 
             var interConfig = new InteractionServiceConfig()
@@ -103,12 +103,5 @@ namespace ManageBotPlus
         public async Task AddModulesAsync() =>
             Config.modules.ForEach(async module => await this._interactionService.AddModuleAsync(module, this._serviceProvider));
 
-        public void Dispose()
-        {
-            this._client!.LogoutAsync();
-            this._client!.Dispose();
-            Environment.Exit(0);
-            GC.SuppressFinalize(this);
-        }
     }
 }
