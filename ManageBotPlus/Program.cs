@@ -64,7 +64,7 @@ namespace ManageBotPlus
 #else
             await this._client.LoginAsync(TokenType.Bot, (await JsonUtil.GetJsonAsync<TokenModel>("token.json")).Token);
 #endif
-            await this._client.SetGameAsync("Hello World!");
+            await this._client.SetGameAsync("/invite");
             await this._client.StartAsync();
 
 

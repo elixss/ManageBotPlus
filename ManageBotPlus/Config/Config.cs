@@ -15,5 +15,6 @@ namespace ManageBotPlus
             .Where(type => type.IsClass && type.GetInterfaces().Contains(typeof(IManageBotModule)))
             .ToList();
         public static readonly int moduleCount = modules.Count;
+        public static readonly string invite = "https://discord.com/api/oauth2/authorize?client_id=1043131771258159104&permissions=274878220288&scope=bot%20applications.commands";
     }
 }

@@ -32,7 +32,7 @@ namespace ManageBotPlus
             return builder;
         }
 
-        [SlashCommand("show", "This command displays NSFW content from given categories.")]
+        [SlashCommand("show", "This command displays NSFW content.")]
         public async Task NsfwAsync(
             [Summary("category", "Choose the category to see the content from"), Autocomplete(typeof(NsfwAutoCompleteHandler))] string category,
             [Summary("hidden", "Privacy is respected. Whether this is hidden, or not."), Choice("Yes", "true"), Choice("No", "false")] string? hidden = null
@@ -43,7 +43,7 @@ namespace ManageBotPlus
             await ModifyOriginalResponseAsync(message => message.Embed = GetNsfwEmbed(category).GetAwaiter().GetResult().Build());
         }
 
-        [SlashCommand("dm", "Sends you NSFW content into your direct messages. Won't be hidden.")]
+        [SlashCommand("dm", "Sends you NSFW content into your DMs.")]
         public async Task NsfwDmAsync(
             [Summary("category", "Choose the category to see the content from"),
             Autocomplete(typeof(NsfwAutoCompleteHandler))] string category
