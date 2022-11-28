@@ -100,8 +100,16 @@ namespace ManageBotPlus
 #endif
         }
 
-        public async Task AddModulesAsync() =>
-            Config.modules.ForEach(async module => await this._interactionService.AddModuleAsync(module, this._serviceProvider));
-
+        public async Task AddModulesAsync()
+        {
+            foreach (Type module in Config.modules)
+            {
+                try
+                {
+                    await this._interactionService.AddModuleAsync(module, this._serviceProvider);
+                }
+                catch (ArgumentException) { }
+            }
+        }
     }
 }
