@@ -22,7 +22,7 @@ namespace ManageBotPlus
             IServiceProvider services
         )
         {
-            string[] categories = { "Hentai", "Ass", "Pgif", "Thigh", "Hass", "Hboobs", "Boobs", "Pussy", "Paizuri", "Lewdneko", "Hyuri",
+            List<string> categories = new() { "Hentai", "Ass", "Pgif", "Thigh", "Hass", "Hboobs", "Boobs", "Pussy", "Paizuri", "Lewdneko", "Hyuri",
                 "Hthigh", "Hmidriff", "Anal", "Feet", "Blowjob", "Gonewild", "Hkitsune", "Tentacle", "4K", "Kanna",
                 "Hentai_Anal", "Yaoi"
             };

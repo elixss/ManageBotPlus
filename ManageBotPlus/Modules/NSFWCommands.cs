@@ -16,6 +16,19 @@ namespace ManageBotPlus
 
         private static async Task<EmbedBuilder> GetNsfwEmbed(string category)
         {
+            List<string> categories = new() { "Hentai", "Ass", "Pgif", "Thigh", "Hass", "Hboobs", "Boobs", "Pussy", "Paizuri", "Lewdneko", "Hyuri",
+                "Hthigh", "Hmidriff", "Anal", "Feet", "Blowjob", "Gonewild", "Hkitsune", "Tentacle", "4K", "Kanna",
+                "Hentai_Anal", "Yaoi"
+            };
+
+            if (!categories.Contains(category))
+            {
+                return new EmbedBuilder()
+                {
+                    Description = "This category doesn't exist!",
+                    Color = Config.color
+                };
+            }
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", "015445535454455354D6");
             HttpResponseMessage result = await client.GetAsync($"https://nekobot.xyz/api/image?type={category.ToString().ToLower()}");
