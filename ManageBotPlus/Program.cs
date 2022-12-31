@@ -54,7 +54,7 @@ namespace ManageBotPlus
                 Console.WriteLine(message);
             };
 
-            this._client.InteractionCreated += this.CheckForManageBot;
+            //this._client.InteractionCreated += this.CheckForManageBot;
             this._interactionService.SlashCommandExecuted += SlashCommandExecutedHandler.SlashCommandExecuted;
 
             this._client.Ready += this.SetupCommandsAsync;
